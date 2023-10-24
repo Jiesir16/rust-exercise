@@ -4,6 +4,14 @@ fn main() {
         print!("fibonacci1 的 第{}位是{}  ", i, fibonacci1(i));
         println!("fibonacci2 的 第{}位是{}  ", i, fibonacci2(i));
     }
+
+    println!("---------------摄氏度与华氏度转换--------------");
+
+    let f_value: f32 = { 32f32 * 9f32 / 5f32 + 32f32 };
+    println!("-------f32 :{}", 1f32 / 3f32);
+    println!("32℃ = {f_value}℉");
+    println!("32℃ = {}℉", convert_c_2_f(32f32));
+    println!("32℉ = {}℃", convert_f_2_c(32f32));
 }
 
 ///
@@ -24,4 +32,13 @@ fn fibonacci2(n: usize) -> usize {
     }
 
     fibonacci_array[n]
+}
+
+/// 摄氏温度c ，将其转化为华氏温度f ，转换公式为：f=c*9/5+32。
+fn convert_c_2_f(c_value: f32) -> f32 {
+    c_value * 9f32 / 5f32 + 32f32
+}
+
+fn convert_f_2_c(f_value: f32) -> f32 {
+    (f_value - 32f32) * 5f32 / 9f32
 }
