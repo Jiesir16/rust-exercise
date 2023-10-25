@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "rust-exercise-fibonacci"
+name = "rust-exercise"
 version = "0.1.0"
