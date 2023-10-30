@@ -1,48 +1,53 @@
 fn main() {
-    println!("Hello, world!");
-    for i in 1..10 {
-        print!("fibonacci1 的 第{}位是{}  ", i, fibonacci1(i));
-        println!("fibonacci2 的 第{}位是{}  ", i, fibonacci2(i));
+    println!("-------------------------所有权 ownership-------------------------");
+
+    let str1 = String::from("hello");
+
+    // 非基础数据类型，值变量变更绑定，会将会把所有权给到新的变量
+    let str2 = str1;
+    // 此时str1已经无效，不能再使用,会报错
+    // println!("str2 : {str2},str1: {}", str1);
+    println!("str2 : {str2}");
+
+    let mut str3 = give_ownership();
+    println!("str3: {}", str3);
+    str3.push_str(",world!");
+    println!("str3: {}", str3);
+
+    println!("-------------------------借用和引用 borrow&reference-------------------------");
+    println!("在任意给定时间，要么 只能有一个可变引用，要么 只能有多个不可变引用。");
+    println!("引用必须总是有效的。");
+    let mut str4 = String::from("hello");
+    let _str5 = &str4;
+    println!("str4: {} ,_str5: {}", str4, _str5);
+    // 不可变引用不能在可变引用之后使用
+    let str6 = &mut str4;
+    // println!("str4: {} ,str5: {} ,str6: {}", str4, str5, str6);
+    // println!("str4: {str4}");
+    // 可变引用只能有一个，且在可变引用没有归还的时候，源变量不能使用
+    println!("str6: {str6}");
+    println!("str4: {str4}");
+
+    println!("-------------------------slice-------------------------");
+    let str7 = String::from("hello world");
+    let str8 = &str7[..];
+    println!("str8 : {str8}");
+    let str9 = first_world(&str7);
+    println!("str9 is {str9}");
+    let len = str7.len();
+    let str10 = first_world(&str7[..len]);
+    println!("str10 is {str10}");
+}
+
+fn give_ownership() -> String {
+    let result = String::from("hello");
+    result
+}
+
+fn first_world(s: &str) -> &str {
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' { return &s[..i]; }
     }
-
-    let aa= String::from("123123");
-    let _a = aa;
-    println!("aa is {_a}");
-
-    println!("---------------摄氏度与华氏度转换--------------");
-
-    let f_value: f32 = { 32f32 * 9f32 / 5f32 + 32f32 };
-    println!("-------f32 :{}", 1f32 / 3f32);
-    println!("32℃ = {f_value}℉");
-    println!("32℃ = {}℉", convert_c_2_f(32f32));
-    println!("32℉ = {}℃", convert_f_2_c(32f32));
-}
-
-///
-/// 递归获取fibonacci数
-fn fibonacci1(n: usize) -> usize {
-    if n < 3 { 1 } else { fibonacci1(n - 1) + fibonacci1(n - 2) }
-}
-
-fn fibonacci2(n: usize) -> usize {
-    let mut fibonacci_array: [usize; 10] = [0; 10];
-
-    // 第一个数、第二个数 都是1
-    fibonacci_array[1] = 1;
-    fibonacci_array[2] = 1;
-
-    for i in 3..=n {
-        fibonacci_array[i] = fibonacci_array[i - 1] + fibonacci_array[i - 2];
-    }
-
-    fibonacci_array[n]
-}
-
-/// 摄氏温度c ，将其转化为华氏温度f ，转换公式为：f=c*9/5+32。
-fn convert_c_2_f(c_value: f32) -> f32 {
-    c_value * 9f32 / 5f32 + 32f32
-}
-
-fn convert_f_2_c(f_value: f32) -> f32 {
-    (f_value - 32f32) * 5f32 / 9f32
+    &s[..]
 }
