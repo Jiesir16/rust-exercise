@@ -5,6 +5,10 @@ fn main() {
         println!("fibonacci2 的 第{}位是{}  ", i, fibonacci2(i));
     }
 
+    let aa= String::from("123123");
+    let _a = aa;
+    println!("aa is {_a}");
+
     println!("---------------摄氏度与华氏度转换--------------");
 
     let f_value: f32 = { 32f32 * 9f32 / 5f32 + 32f32 };
