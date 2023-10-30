@@ -14,6 +14,9 @@ fn main() {
     str3.push_str(",world!");
     println!("str3: {}", str3);
 
+    let (_str_sss, len) = calculate_length(str3);
+    println!("str3: {},len: {}", _str_sss, len);
+
     println!("-------------------------借用和引用 borrow&reference-------------------------");
     println!("在任意给定时间，要么 只能有一个可变引用，要么 只能有多个不可变引用。");
     println!("引用必须总是有效的。");
@@ -37,6 +40,11 @@ fn main() {
     let len = str7.len();
     let str10 = first_world(&str7[..len]);
     println!("str10 is {str10}");
+}
+
+fn calculate_length(p0: String) -> (String, usize) {
+    let len = p0.len();
+    (p0,len)
 }
 
 fn give_ownership() -> String {
