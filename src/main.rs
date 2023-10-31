@@ -1,48 +1,113 @@
+// 派生注解
+#[derive(Debug)]
+struct User {
+    active: bool,
+    name: String,
+    age: u8,
+    email: String,
+    password: String,
+}
+
+#[derive(Debug)]
+struct UserEx {
+    active: bool,
+    age: u8,
+}
+
 fn main() {
-    println!("Hello, world!");
-    for i in 1..10 {
-        print!("fibonacci1 的 第{}位是{}  ", i, fibonacci1(i));
-        println!("fibonacci2 的 第{}位是{}  ", i, fibonacci2(i));
+    println!("---------structure exercise----");
+    let user1 = User {
+        active: true,
+        name: String::from("John"),
+        age: 24,
+        email: String::from("aaaa@qq.com"),
+        password: String::from("qqqqqqqqq"),
+    };
+    println!("-------user1 :{:?}", user1);
+    let mut user2 = User {
+        ..user1
+    };
+    user2.email = String::from("qqqqqqq@qq.com");
+    println!("-------user2:{:?}", user2);
+
+
+    let user_ex1 = UserEx {
+        active: true,
+        age: 33,
+    };
+
+    let mut user_ex2 = UserEx {
+        ..user_ex1
+    };
+
+    user_ex2.age = 88;
+    // 基础数据类型，不会产生clone，而是copy
+    println!("--------user_ex1 :{:?},user_ex2:{:?}", user_ex1, user_ex2);
+
+    let user_ex3 = bind_user_ex(false, 99);
+    println!("--------user_ex3 :{:?}", user_ex3);
+
+    let point1 = Point(-10, 100);
+    println!("----玩家坐标是:{:?}", point1);
+
+
+    println!("------------------使用元组传递参数-------------------");
+    let area_param = (10, 9);
+    let area_result = area_cal(area_param);
+    println!("------二元数组来进行传参,结果是:{}", area_result);
+
+    println!("----------------使用结构体来计算");
+
+    let rectangle = Rectangle {
+        width: 8,
+        height: 7,
+    };
+
+    let area_result2 = area_cal2(&rectangle);
+    println!("width:{}", &rectangle.width);
+    println!("height:{}", &rectangle.height);
+    println!("------使用结构体来进行传参,结果是:{}", area_result2);
+
+
+    println!("------使用结构体来进行传参,结果是:{}", area_result2);
+
+    let area1 = rectangle.area();
+    println!("-----area1:{},w:{}", area1, rectangle.height);
+
+    let area2 = Rectangle::area_from(6, 7);
+    println!("-----area2:{}", area2);
+}
+
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        &self.width * &self.height
     }
 
-    let aa= String::from("123123");
-    let _a = aa;
-    println!("aa is {_a}");
-
-    println!("---------------摄氏度与华氏度转换--------------");
-
-    let f_value: f32 = { 32f32 * 9f32 / 5f32 + 32f32 };
-    println!("-------f32 :{}", 1f32 / 3f32);
-    println!("32℃ = {f_value}℉");
-    println!("32℃ = {}℉", convert_c_2_f(32f32));
-    println!("32℉ = {}℃", convert_f_2_c(32f32));
-}
-
-///
-/// 递归获取fibonacci数
-fn fibonacci1(n: usize) -> usize {
-    if n < 3 { 1 } else { fibonacci1(n - 1) + fibonacci1(n - 2) }
-}
-
-fn fibonacci2(n: usize) -> usize {
-    let mut fibonacci_array: [usize; 10] = [0; 10];
-
-    // 第一个数、第二个数 都是1
-    fibonacci_array[1] = 1;
-    fibonacci_array[2] = 1;
-
-    for i in 3..=n {
-        fibonacci_array[i] = fibonacci_array[i - 1] + fibonacci_array[i - 2];
+    fn area_from(w: u32, h: u32) -> u32 {
+        w * h
     }
-
-    fibonacci_array[n]
 }
 
-/// 摄氏温度c ，将其转化为华氏温度f ，转换公式为：f=c*9/5+32。
-fn convert_c_2_f(c_value: f32) -> f32 {
-    c_value * 9f32 / 5f32 + 32f32
+fn area_cal(double_tuple: (u32, u32)) -> u32 {
+    double_tuple.0 * double_tuple.1
 }
 
-fn convert_f_2_c(f_value: f32) -> f32 {
-    (f_value - 32f32) * 5f32 / 9f32
+fn area_cal2(rectangle: &Rectangle) -> u32 {
+    rectangle.width * rectangle.height
 }
+
+
+fn bind_user_ex(active: bool, age: u8) -> UserEx {
+    UserEx {
+        active,
+        age,
+    }
+}
+
+#[derive(Debug)]
+struct Point(i32, i32);
